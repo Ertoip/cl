@@ -6,239 +6,183 @@
     <title>Document</title>
 </head>
 <body>
-    <p>1.1 Propositional Languages
-        With the term sentence we mean any proposition for which it is it makes sense to ask
-        whether it is true or false. For example, propositions such as ‘’Paul is running”, “Laura has
-        red hair”, “It rains and it is a windy day”, “If it’s sunny, then I go to the sea” are sentences.
-        On the contrary, propositions such as “It’s sunny, isn’t it?”, “Paul, come home soon!”, whose
-        content does not consist in a mere statement, are not considered to be sentences.
-        Informally, we then say that a sentence is a simple sentence or an atomic sentence
-        if it contains no other sentence as its proper part. Let’s say instead that a sentence is a
-        composite sentence if it contains other sentences, that is, if it is possible to break it
-        down into simpler sentences. For example, the propositions “Paul runs” and “Laura has
-        red hair“ are atomic sentences; on the other hand, examples of composite sentences are
-        “It rains and it is a windy day”, “If it is sunny I go to the sea” and “Carla has black eyes
-        or Carla has black hair” (to see that “It’s raining and it is a windy day” is a composed
-        sentence, it is sufficient to observe that “It is raining and it is a windy day” contains as its
-        proper parts the two sentences “It is raining” and “It is a windy day”.)
-        The words “and”, “or”, “if ... then”, “not”, “but” are called connectives. Connectives
-        allow therefore to obtain sentences from other sentences, that is, they allow to obtain
-        composed sentences from simple sentences. Let’s consider the composed sentence “It rains
-        and it is a windy day”. If we associate with the atomic sentence “it rains” the letter p, with
-        the atomic statement “it is a windy day” the letter q and we indicate with the character ∧
-        the connective “and”, we can associate with the sentence “It rains and it is a windy day”
-        
-        1
-        
-        Propositional Languages and Truth Tables 2
-        a formal expression of the type p ∧ q. The expression p ∧ q is an example of a formula;
-        in general formulas will be particular expressions obtained from a given set of symbols,
-        called propositional letters, through an appropriate application of connectives. Formulas
-        constitute a (rough and simplified) representation in an artificial language of the conceptual
-        content of natural language sentences. Let us now define the concept of formula in a precise
-        manner.
-        A propositional language L is just a set, whose elements are called propositional
-        
-        letters; they are indicated with the characters p, q, r, . . . (possibly with sub- and super-
-        scripts). Since we are interested in computational applications, we assume that L is finite
-        
-        or countable (in the latter case the elements of L can be put in bijective correspondence
-        with natural numbers).
-        Using the elements of L, the brackets (,) and the special characters relative to the
-        propositional connectives ∧ ("and"), ∨ ("or"), → ("if...then"), ¬ ("not"), we are in
-        principle able to write down all symbol strings like for instance
-        (∗) p ∨ ¬qqq, ¬¬)p∧, (¬(p ∨ q)), . . .
-        Not all such symbol strings are acceptable from the point of view of our formal grammar,
-        that is not all symbol strings are to be considered L-formulas. We call L-formulas or
-        formulas only the symbol strings that are obtained by applying finitely many times the
-        following formation rules:
-        (i) every p ∈ L is a formula (this is said to be an atomic formula);
-        (ii) if A1 and A2 are formulas, so are (A1 ∧ A2), (A1 ∨ A2), (A1 → A2), (¬A1).
-        We can equivalently rephrase the above formation rules as follows: a symbol string is a
-        L-formula iff (from now on, ‘iff ’ abbreviates ‘if and only if ’) it happens to occur as a
-        last entry in a L-construction, where a L-costruction is a list of symbol strings, each entry
-        of which is either a string formed by a single character belonging to L or it is obtained
-        from previous entries according to the rules (ii) above. For instance, the L-costruction
-        
-        p, q, (p ∨ q), (¬(p ∨ q))
-        
-        witnesses that (¬(p ∨ q)) is a formula. On the contrary, the first and the second symbol
-        strings mentioned in (∗) are not formulas because there does not exist a L-costruction
-        ending into them (try to build it and you will see that it is not possible!).
-        
-        Propositional Languages and Truth Tables 3
-        Formulas are denoted by the letters A, B, . . . (called metavariables), possibly endowed
-        with sub- and super-scripts. The set of all formulas is denoted with FL.
-        We need some notational conventions.
-        • The introduction of brackets (inside the definition of a formula) is needed in order to
-        guarantee the uniqueness of reading, i.e. to be able to reconstruct in a unique way
-        the construction procedure of a formula. We won’t formally prove the uniqueness of
-        reading theorem (to avoid a too detailed boring exposition), however we mention
-        that reading uniqueness is needed to avoid amibiguities in many circumstances.
-        In particular, reading uniqueness allow to identify, for a non atomic formula, the
-        main connective of the formula, which is the last connective introduced during the
-        construction of the formula. For instance, the main connective of ((p ∧ q) → (q ∨ p))
-        is →.
-        • However, the use of brackets will be subject to some liberalization, for instance the
-        external brackets will be systematically omitted. To alleviate reading, we stipulate
-        the following binding precedences: ¬ binds strongerly than ∧, ∨, and the latter bind
-        strongerly than →. As a consequence, for instance, ¬p → q ∨ r stands for ((¬p) →
-        (q ∨ r)). On the other hand, the writing p ∧ q ∨ r is considered to be ambiguous and
-        brackets are needed to distinguish (p ∧ q) ∨ r from p ∧ (q ∨ r).
-        • Abbreviations like p ∧ q ∧ r might be used, conventionally p1 ∧ · · · ∧ pn stands for
-        (p1 ∧ (p2 ∧ (· · ·(pn−1 ∧ pn)· · ·))). The same convention applies to ∨, but no similar
-        convention holds for → (as a consequence, writing p → q → r won’t be allowed).
-        • A ↔ B stands for (A → B) ∧ (B → A): the defined connective ↔ is called
-        ‘bi-implication’ or ‘material equivalence’. One could restrict the list of primitive
-        connectives, our choice for the set {∧, ∨,→, ¬} is not minimal in this sense.
-        • The notation A(p1, . . . , pn) means that the propositional letters that have been used
-        in the construction of A are included in the list p1, . . . , pn (when we use this notation,
-        we assume that such list does not contain repetitions).
-        • It will be useful for proofs and formal definitions to have at hand a complexity measure
-        c for our formulas; we could simply count the number of symbols to get a complexity
-        measure, however usually it is sufficient to count the number of the connectives. In
-        
-        Propositional Languages and Truth Tables 4
-        order to formally introduce the function c counting the number of the connectives
-        of a formula, we can formally say that c(p) = 0 for p ∈ L, c(¬A) = c(A) + 1,
-        c(A1 ∗A2) = c(A1) +c(A2) + 1 for ∗ = ∧, ∨, →. A definition like this one is said to be
-        an inductive definition and is characterized by the fact that it works in a progressive
-        way from simple to composite formulae. In other words, in order to introduce the
-        function c, we stipulated that atomic formulas have zero connectives and that a
-        formula like A∨B has a number of connectives equal to the number of connectives of
-        A plus the number of connectives of B plus one. This use is justified by the fact that
-        when we evaluate c(A ∨ B), we already know how to evaluate c(A) and c(B) (this is
-        because A and B, as symbol strings, are shorter and as a consequence we can suppose
-        the computation of c(A) and c(B) to have already been done). The above definition
-        procedure based on reading uniqueness for formulas will be repeatedly used in the
-        sequel.
-        • Sub(A) indicates the set of the subformulas of the formula A; formally, we can define
-        inductively this set as follows:
-        - Sub(p) = {p}, for p ∈ L;
-        - Sub(A ∗ B) = {A ∗ B} ∪ Sub(A) ∪ Sub(B), for ∗ = ∧, ∨,→;
-        - Sub(¬A) = {¬A} ∪ Sub(A).
-        
-        Example 1. let A be the formula ¬p → (¬q ∨ r). The we have that c(A) = 4 and
-        Sub(A) = {¬p → (¬q ∨ r), ¬q ∨ r, ¬p, ¬q, p, q, r}.
-        
-        1.2 Truth Functions
-        A first naif way to enter into the typical logical problems consists in considering the problem
-        of the correctness of inference schemata. For instance, let us consider the two inferences
-        
-        Inference I
-        
-        If it rains, I take un umbrella.
-        I do not take an umbrella.
-        Hence it does not rain.
-        
-        Propositional Languages and Truth Tables 5
-        
-        Inference II
-        
-        If it rains, I take an umbrella.
-        It does not rain.
-        Hence I do not take an umbrella.
-        
-        We want to study the correctness of these inferences. To do it, let us associate with the
-        sentence “It rains” the propositional letter p, and with the sentence “I take an umbrella”
-        the propositional letter q, so that Inference I can be represented as
-        
-        p → q
-        ¬q
-        ¬p
-        and Inference II can be represented as
-        
-        p → q
-        ¬p
-        ¬q
-        
-        An inference is correct iff whenever its premises are true, so it is its conclusion. To continue
-        our analysis, we need to better understand the notion of truth.
-        A formula denotes an assertion that, in a given situation, turns out to be true or false
-        (but not simultaneously true and false). In fact, once the truth-values of the components
-        of a sentence are known, one can mechanically determine the truth value of the whole
-        formula: this is because our connectives will be analyzed from a truth-functional point
-        of view, that is they are considered as functions having both as input and as outputs some
-        truth values. To identify the meaning of a connective just mean to specify under which
-        conditions a stetement having that connective as the main connective is true or false.
-        
-        The semantics we are introducing is two-valued, meaning that we have just two truth-
-        values (true and false): we shall indicate them as T, F or as 1, 0. We now analyze in detail
-        
-        the meaning of each connective.
-        • The sentence “It rains and it is a windy day” is true iff both the sentences “It rains”
-        and “It is a windy day” are true. Recall that the connective “and” is called conjunction
-        and is denoted by the symbol ∧. Thus, if we indicate with p the sentence “It rains” and
-        with q the sentence “It is a windy day”, we can formalize the sentence “It rains and it is a
-        
-        Propositional Languages and Truth Tables 6
-        windy day” with the formula p ∧ q. According to the above observations, the formula p ∧ q
-        is true iff both p and q are true.
-        In general, if we consider any two sentences A and B, the formula A ∧ B is true iff
-        both A and B are. We can summarize what we said via the following table, called the
-        truth-table of the connective ∧:
-        
-        A B A ∧ B
-        T T T
-        F T F
-        T F F
-        F F F
-        
-        • The sentence “Carla has black eyes or Carla has black hair” on the contrary is true iff
-        at least one of the sentences “Carla has black eyes” and “Carla has black hair” is true. Recall
-        that the connective “or” is called disjunction and is denoted by the symbol ∨. In our
-        natural language, there exists two different uses of the disjunction, namely the inclusive
-        use (corresponding to the latin word ‘vel’) and the exclusive use (corresponding to the
-        latin word ‘aut’). The difference between the two lies in the different evaluation of the case
-        in which both disjuncts are true: in the inclusive use, the disjunction evaluates to true,
-        whereas in the exclusive use it evaluates to false. We choose the inclusive interpretation,
-        however we notice that this choice does not affect the expressivity of the language, because
-        the exclusive disjunction can be obtained via the combination (A ∨ B) ∧ ¬(A ∧ B)).
-        In general, if we consider any two sentences A and B, the formula A ∨ B is true iff
-        either A or B or both are true. We can summarize what we said via the following table,
-        called the truth-table of the connective ∨:
-        A B A ∨ B
-        T T T
-        F T T
-        T F T
-        F F F
-        
-        • The sentence “It does not rain” is true iff the sentences “It rains” is false. Recall that
-        the connective “not” is called negation and is denoted by the symbol ¬.
-        
-        Propositional Languages and Truth Tables 7
-        In general, if we consider any sentence A, the formula ¬A is true iff the formula A is
-        false. Thus the truth-table of the connective ¬ is:
-        A ¬A
-        T F
-        F T
-        
-        The above interpretation of the negation comes from the aristotelian tradition and
-        characterizes classical logic (this is the logic we study in these notes). We just mention
-        that during the history and in particular in the past century there have been different and
-        interesting alternative analyses of the negation, both from a syntactic and a semantic point
-        of view.
-        • We finally take into consideration the connective “if ... then”. This connective is
-        called implication or conditional and is denoted by the symbol →. Let us examine a
-        statement like “if a is an even number, then a + 1 is an odd number”. Surely we won’t
-        consider a counterexample to such statement a case where the number a is not even. On
-        the other hand, all possible counterexamples are those where a number a is given and is
-        such that a is even and a + 1 is not odd. Since it is not possible to exhibit such a number,
-        we are inclined to evaluate the sentence “if a is an even number, then a + 1 is an odd
-        number” to be true. In this way, we stipulate that if A and B are any sentences, the
-        formula A → B is false only when A is true and B is false. We can summarize this via the
-        following truth-table for →:
-        
-        A B A → B
-        T T T
-        F T T
-        T F F
-        F F T
-        
-        Surely, such use of the implication is justified in some mathematical context, like
-        the above mentioned one, however this use is far from giving an exhaustive account of
-        the different interpretations of the implication in the natural language, where multiple
-        meanings (eg causal or counterfactual) are present. To encompass such meanings, however,
-        we need more sophisticated logical tools, which are beyond the scope of the present notes,</p>
+    <p>1) describe T-propagation:
+
+if we are in the state <V|F|*>  and we have a literal l and a clause C such that V entails -C
+and -C&-l is not T-consistent (meaning that CVl (it's negation) is T-valid)
+we can then pass to the state <V,l[p]|F,Cvl|*>
+    
+2) descirbe T-conflict and the unsat core
+
+suppose we are in the state <V|F|*> and that my current partial assigment is of the kind l1&l2&...&lk and that it is not T-satisfiable
+we can pass to the state
+<V|F,C|C> where C is the is the negation of the assigment that caused the inconsistency and it is called theory lemma 
+an unsat core of a T-inconsistent set S of literals is a minimal T-inconsistent  subset of S, in the above case my conflict set of clauses 
+    
+3)describe resolution rule
+
+in order to apply the resolution rule we need 2 clauses containing the same propositional letter with opposite value, the first should contain p and the second -p (or viceversa)
+to get the conclusion we simply need to remove p and -p and merge the result 
+pVC & -PVD gives as resolution CVD which is a logical consequence of the 2 parent clauses 
+indeed if V(pVC)=1 and V(-pVD)=1 then V(CVD)=1 
+in fact if V(p)=1 then v(D)=1 while if v(p)=0 then v(C)=1
+    
+4) formulate the subsumption rule 
+
+the subsumption rule state that if we have in the current close both c and c1 with c1 subset of c then we can eliminate c without altering refutational completness
+
+5) explain how to use the herbrand theoreme in handling satifiability of universal formula 
+
+let T be a set of universal sentences, fisrt of all we need to ground instantiate all the sentences of the set T (if A is a universal sentences 
+A(x1/t1...xn/tn)) and get gr(T) then the theorem state that a the set T is unsatisfiable iff the set gr(T) is unsatisfiable 
+note that this new set could be infinite 
+
+6) how does idl work? (bellam ford algorithm)
+
+the algorithm verifies the absence of negative cycle in an appropieted weighted graph
+first we write all the term in the form;
+x-y<=n   n belonging to Z
+
+once we have a finite set of literals in the above form we can check satisfiability in the following way:
+
+we draw an arrow from y to x that as as weight n, then we check for cycle ( a cycle begin and end in the same variable/node) 
+we sum the value of the n and if the cycle in non-negative than the problem is satisfiable otherwise it is unsatisfiable
+
+7) make an exemple of convex theory;
+    
+ EUF and LRA (linear real arithmetics) are examples of convex theories
+
+8) make an example of non-convex theory
+
+IDL (linear integer arithmetics) and the theory of arrays are examples of non  convex theories. 
+
+9) herbrand theoreme 
+
+a set of universal sentences is satisfiable iff it is satisfiable the set of its ground intances
+    
+10) the language after skolemisation is richere or not?
+    
+the skolemization procedure produce an equi-satisfiable formula in a larger language
+
+11) formulate the explain rule 
+
+suppose we are in the status <V|F,Dvl|lVC>  we can pass to the status <V|F,Dvl|DVC> 
+whenever we have V entails ¬c and ¬l was assigned in V
+after all the nagation of the litarelas from c and d were assigned 
+    
+12) formulate di propagate rule 
+ if we are in the status (V|F,D∨l|∗) we can go to the status
+(V,lp|F,D∨l|∗), if V |= ¬D and l is not defined in V .
+    
+13) formulate the decision rule 
+
+if we are in the state <V|F|*> , we can pass to the state <V,l[d]|F|*>
+in case the previous
+rules do not apply, l is not defined in V and either l or ¯l (or both) occur somewhere in F
+
+14)formulate the pure literal rule
+
+it is possible to propagate a literal l occurring somewhere in F if its opposite ¬l never occurs
+
+15)formulate the conflict rule
+
+if we are in the se status (V|F,C|∗) we can pass to the
+status (V|F,C|C), if V |= ¬C
+
+16)formulate the failure rule
+
+if we are in the conflict status (V | F | C) and C is the empty clause, the
+algorithm terminates with an unsatisfiability outcome.
+If we are in a conflict state (V | F | C) and there are no decided literals, we can
+nevertheless terminate the algorithm with an unsatisfiability outcome: this is because
+iterated applications of the explain rule below would nevertheless produce a conflict state
+with empy clause
+
+17)refutational compleatness theoreme 
+
+Theorem (refutational completeness). Let C0 be a set of clauses; we have that C0 is
+inconsistent iff the empty clause belongs to R(C0)
+with R being the satuarted set resulting from the end of the resolution calculus 
+
+18)refutational completeness theoreme for ground resolution 
+
+If T is a set of statements
+that are universal closures of clauses, then T is unsatisfiable (i.e. has no model) if and
+only if the empty clause belongs to R(gr(T))
+with R being the set of ground clauses that can be obtained by resolution from
+the propositional abstractions of the clauses of T
+
+19)
+
+formulate the satisfiablitiy criterion for a conjunction of atoms in IDL 
+
+the satisfiability is given by the absence of negative weighted cycle 
+a cycle start and ends in the same varible i.e x-y<=0 and anx<-1 give a negative cycle 
+every literal is in the form x-y<n  the weight is given by the n an the arrow goes from y to x
+                                    
+20) describe the satisfiability algorithm for a conjunction of literals in EUF
+
+21)formulate the condition of a theory to be stably infinite 
+
+we say that T-is stably infinite if every T-satisfiable constraint is satisfiable in a infinite(countable) model of T
+22)explain the role of back-jumping in the statisfiability algorithm
+
+Back-jumping is a technique that reduces the search space and increases the efficiency of backtracking algorithms for solving the satisfiability problem (SAT)1. It allows the algorithm to backtrack to a relevant decision level, rather than following a chronological order2
+
+23)formulate a sufficent condition for the correctness and compleatness of the nelson-oppen combination algorithm
+
+all the variable equalities as to be assigned so, for all the pair of variable i should have either x=y or ¬x=y   (not sure this is correct)
+
+24)compare resolution and dpll w.r.t. resource consumption
+
+resolution may require larger space cosumption
+
+25)write down the reflexivity, symmetry, transitivity axioms for equality
+  and the congruenc axiom regarding the symbol of L
+ 
+(forall x)  ( x=x)
+
+(forall x)(forall y) (x=y-->y=x)
+
+(forall x y z)(x=y and y=z --> x=z)
+
+ congruence for D        x1=y1 & x2=y2 & x3=y3 & D(x1,x2,x3) -> D(y1,y2,y3)
+  congruence for f        x=y -> f(x)=f(y)
+    
+26)what are the function symbol of the theory of arrays
+
+read(a,i)
+write(a,i,e) 
+
+27)explain nelson-oppen 2 hypotesis 
+
+1) T1 and T2 signature as to be disjoint they can share only the identity predicate
+2) T1 and T2 are stably infinite 
+
+28)explain nelson-oppen combination procedure 
+
+if we the have a satisfiability problem of a set of literals which is mixed (i.e contains different theory) 
+the idea is to check the satisfiability of T1 and T2 separately (iff they respect the 2 hypotesis we have for this algorithm) now there are 2 possibilities 
+if one of them or both of them are UNSAT then the problem is UNSAT
+if both of them are sat then there is one more constraint that needs to be satisfied that is that all the variable equalities as to be assigned so, for all the pair of variable i should have either x=y or ¬x=y
+now we have sat if there is an assignement to variables equalities for which the separated checks succedes
+
+important to know 
+
+what is a literal
+what is a flat literal 
+what is a formula 
+what is a sentence 
+what is a term 
+what is a flat term 
+bounded unbounded variables
+    
+;a horn clause is a clause with at most one positive literal 
+;horn clause-->(¬xVy)
+;not horn clause-->(xVy)
+between DPLL, resolution and congruence closure the one that may require more space is 
+RESOLUTION
+congruence closure does not, instead; require large time consumption 
+</p>
 </body>
 </html>
