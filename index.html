@@ -183,6 +183,113 @@ bounded unbounded variables
 between DPLL, resolution and congruence closure the one that may require more space is 
 RESOLUTION
 congruence closure does not, instead; require large time consumption 
+
+</br>
+</br>
+    
+(declare-datatypes () (( Regions T E Ma U L A Mo)))
+
+(declare-fun Color (Regions) Int)
+(declare-fun Border (Regions Regions) Bool)
+
+(assert (forall ((x Regions) (y Regions)) (=> (Border x y) (not (= (Color x) (Color y))))))
+
+(assert (and 
+        (Border E T) (Border E Ma) (Border U L) (Border U T) (Border U Ma) (Border T Ma)  
+        (Border T L) (Border Ma A) (Border Ma L) (Border A L) (Border A Mo) (Border L Mo)
+        )
+)
+        
+
+
+(push)
+(assert (forall ((x Regions)) (and (<= 1 (Color x)) (<= (Color x) 3))))
+(check-sat)
+(pop)
+(assert (forall ((x Regions)) (and (<= 1 (Color x)) (<= (Color x) 4))))
+(check-sat)
+
+</br>
+
+(declare-datatypes () (( Tasks t0 t1 t2 t3 t4 t5 t6 t7)))
+
+(declare-fun Ord (Tasks) Int)
+
+(assert (forall ((x Tasks)) (and (<= 0 (Ord x)) (<= (Ord x) 7))))
+(assert (forall ((x Tasks) (y Tasks)) (=> (= (Ord x) (Ord y)) (= x y))))
+
+(assert (and 
+        (< (Ord t0) (Ord t6)) 
+        (< (Ord t1) (Ord t2)) (< (Ord t1) (Ord t4)) (< (Ord t1) (Ord t6)) 
+        (< (Ord t3) (Ord t0)) (< (Ord t3) (Ord t4))
+        (< (Ord t5) (Ord t1))
+        (< (Ord t7) (Ord t0)) (< (Ord t7) (Ord t1))
+        )
+)
+
+
+
+; COMMENT: this specification file includes the possibility of flipping the tiles before 
+; inserting them into the solution frame. 
+; Since the text of the exercise was (deliberately) a bit vague, other specifications (without flips, 
+; with selected flips, etc.) will be considered correct 
+; Such  different specifications  can of course give different solutions 
+
+
+(declare-datatypes () ((tessere t1 t2 t3 t4 t5 t6 t7 t8 t9 t10)))
+
+(declare-fun Left ((tessere)) Int)
+(declare-fun Right ((tessere)) Int)
+
+(declare-fun F ((tessere)) Bool) ; this function says whether we flip the tile before inserting in the solution
+(declare-fun Position ((tessere)) Int) ; this function gives the solution
+(declare-fun FLeft ((tessere)) Int)  ; left cell after possible flip
+(declare-fun FRight ((tessere)) Int) ; right cell after possible flip
+
+
+; tile' positions range from 1 to 10
+(assert (forall ((x tessere)) (and (< 0 (Position x)) (<= (Position x) 10)))) 
+; injectivity requirement: different tiles have different positions 
+(assert (forall ((x tessere) (y tessere)) (=> (= (Position x) (Position y)) (= x y))))
+(assert (forall ((x tessere))(=> (not (F x)) (and (= (FLeft x) (Left x)) (= (FRight x) (Right x))))))    
+(assert (forall ((x tessere))(=> (F x) (and (= (FLeft x) (Right x)) (= (FRight x) (Left x))))))       
+; matching requirement
+(assert (forall ((x tessere) (y tessere)) (=> (= (Position x) (+ (Position y) 1)) (= (FRight y) (FLeft x))))) 
+;we need an extra matching requirement to close the circle
+(assert (forall ((x tessere) (y tessere)) (=> (and (= (Position x) 1) (= (Position y) 10)) (= (FRight y) (FLeft x)))))
+
+(assert (and
+          (= (Left t1) 1) (= (Right t1) 3)
+          (= (Left t2) 6) (= (Right t2) 1)
+          (= (Left t3) 3) (= (Right t3) 2)
+          (= (Left t4) 9) (= (Right t4) 6)
+          (= (Left t5) 1) (= (Right t5) 2)
+          (= (Left t6) 4) (= (Right t6) 9)
+          (= (Left t7) 2) (= (Right t7) 6)
+          (= (Left t8) 2) (= (Right t8) 4)
+          (= (Left t9) 6) (= (Right t9) 1)
+          (= (Left t10) 2) (= (Right t10) 2)
+          )
+)
+
+(check-sat) 
+(get-value ((Position t1) (FLeft t1) (FRight t1)))
+(get-value ((Position t2) (FLeft t2) (FRight t2)))
+(get-value ((Position t3) (FLeft t3) (FRight t3)))
+(get-value ((Position t4) (FLeft t4) (FRight t4)))
+(get-value ((Position t5) (FLeft t5) (FRight t5)))
+(get-value ((Position t6) (FLeft t6) (FRight t6)))
+(get-value ((Position t7) (FLeft t7) (FRight t7)))
+(get-value ((Position t8) (FLeft t8) (FRight t8)))
+(get-value ((Position t9) (FLeft t9) (FRight t9)))
+(get-value ((Position t10) (FLeft t10) (FRight t10)))
+
+
+
+
+(check-sat)
+(get-model)   
+
 </p>
 </body>
 </html>
